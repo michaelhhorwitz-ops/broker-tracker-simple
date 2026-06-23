@@ -233,12 +233,13 @@ const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const SITE_PASSWORD = 'MHSJ$ales'
 // ────────────────────────────────────────────────────────────────────────────
 
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+let sb = null
 
 // Password gate
 function checkPassword() {
   const val = document.getElementById('gateInput').value
   if (val === SITE_PASSWORD) {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
     document.getElementById('gate').style.display = 'none'
     init()
   } else {
