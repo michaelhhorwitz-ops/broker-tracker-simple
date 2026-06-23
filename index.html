@@ -278,7 +278,7 @@ let saveTimer = null
 async function loadFromSupabase() {
   const { data: row, error } = await sb.from('app_state').select('data').eq('id', 1).maybeSingle()
   if (error) { console.error(error); return null }
-  return row?.data ?? null
+  return row?.data || null
 }
 
 async function saveToSupabase() {
@@ -305,7 +305,7 @@ function hideSaving() {
 // ─── INIT ────────────────────────────────────────────────────────────────────
 async function init() {
   const remote = await loadFromSupabase()
-  data = remote ?? JSON.parse(JSON.stringify(DEFAULT_DATA))
+  data = remote || JSON.parse(JSON.stringify(DEFAULT_DATA))
   if (!remote) {
     // First load — seed with historical data
     await saveToSupabase()
@@ -335,10 +335,10 @@ function ensureShape() {
 function brokerStats(broker) {
   let meetings=0, present=0, absent=0, total=0, yes=0, partial=0, no=0, sum=0
   for (const w of data.weeks) {
-    const att = data.attendance[w]?.[broker] ?? ""
+    const att = data.attendance[w]?.[broker] || ""
     if (att === "Present" || att === "Absent") { meetings++; if (att==="Present") present++; else absent++ }
     if (att !== "Absent") {
-      const s = data.status[w]?.[broker] ?? ""
+      const s = data.status[w]?.[broker] || ""
       if (s==="Yes"||s==="Partial"||s==="No") { total++; sum+=SCORE[s]; if(s==="Yes")yes++; else if(s==="Partial")partial++; else no++ }
     }
   }
@@ -348,9 +348,9 @@ function brokerStats(broker) {
 function weekStats(week) {
   let meetings=0, present=0, total=0, sum=0
   for (const b of data.brokers) {
-    const att = data.attendance[week]?.[b] ?? ""
+    const att = data.attendance[week]?.[b] || ""
     if (att==="Present"||att==="Absent") { meetings++; if(att==="Present") present++ }
-    if (att!=="Absent") { const s=data.status[week]?.[b]??""; if(s==="Yes"||s==="Partial"||s==="No"){total++;sum+=SCORE[s]} }
+    if (att!=="Absent") { const s=data.status[week]?.[b]||""; if(s==="Yes"||s==="Partial"||s==="No"){total++;sum+=SCORE[s]} }
   }
   return { attPct:meetings>0?present/meetings:null, complPct:total>0?sum/total:null, meetings, present, total }
 }
@@ -408,7 +408,7 @@ function renderGrid() {
   for (const b of data.brokers) {
     html += `<tr><td class="broker-name">${b}</td>`
     for (const w of sw) {
-      const att=data.attendance[w]?.[b]??"", status=data.status[w]?.[b]??""
+      const att=data.attendance[w]?.[b]||"", status=data.status[w]?.[b]||""
       const disabled=att==="Absent"
       html += `<td class="week-block"><span class="att-cell att-${att||"empty"}" onclick="cycleAtt('${w}','${escAttr(b)}')">${ATT_ICONS[att]||"·"}</span></td>`
       html += `<td><span class="status-cell ${disabled?"status-NA disabled":status?"status-"+status:"status-empty"}" ${disabled?"":` onclick="cycleStatus('${w}','${escAttr(b)}')"`}>${disabled?"✈":(STATUS_ICONS[status]||"·")}</span></td>`
@@ -429,12 +429,12 @@ function renderMeeting() {
   const sel = document.getElementById("weekSelector")
   const week = sel.value; if (!week) return
   const sw = data.weeks.slice().sort()
-  const priorWeek = sw[sw.indexOf(week)-1] ?? null
+  const priorWeek = sw[sw.indexOf(week)-1] || null
   document.getElementById("meetingTbody").innerHTML = data.brokers.map(b => {
-    const att=data.attendance[week]?.[b]??"", status=data.status[week]?.[b]??""
+    const att=data.attendance[week]?.[b]||"", status=data.status[week]?.[b]||""
     const disabled=att==="Absent"
-    const priorCommit=priorWeek?data.commitments[priorWeek]?.[b]??""  :""
-    const thisCommit=data.commitments[week]?.[b]??""
+    const priorCommit=priorWeek?data.commitments[priorWeek]?.[b]||""  :""
+    const thisCommit=data.commitments[week]?.[b]||""
     return `<tr>
       <td class="broker-name">${b}</td>
       <td><span class="att-cell att-${att||"empty"}" onclick="cycleAtt('${week}','${escAttr(b)}')">${ATT_ICONS[att]||"·"}</span></td>
@@ -467,13 +467,13 @@ function renderAll() { renderStats(); renderWeekSelector(); renderMeeting(); ren
 
 // ─── INTERACTIONS ─────────────────────────────────────────────────────────────
 function cycleAtt(week, broker) {
-  const cur=data.attendance[week]?.[broker]??""
+  const cur=data.attendance[week]?.[broker]||""
   data.attendance[week][broker]=ATT_CYCLE[(ATT_CYCLE.indexOf(cur)+1)%ATT_CYCLE.length]
   if (data.attendance[week][broker]==="Absent") data.status[week][broker]="NA"
   renderAll(); scheduleSave()
 }
 function cycleStatus(week, broker) {
-  const cur=data.status[week]?.[broker]??""
+  const cur=data.status[week]?.[broker]||""
   data.status[week][broker]=STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur)+1)%STATUS_CYCLE.length]
   renderAll(); scheduleSave()
 }
