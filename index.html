@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broker Commitment Tracker</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  margin: 0; padding: 24px 28px 60px;
+  background: #FAF7EB; color: #1a1a1a;
+  font-size: 14px; line-height: 1.5;
+}
+h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; color: #034245; }
+.subtitle { color: #666; font-size: 13px; margin-bottom: 24px; }
+.panel h2 { color: #034245; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border: 1px solid #e6dfc8; border-radius: 8px; padding: 14px 16px; border-top: 3px solid #034245; }
+.stat-card:nth-child(2) { border-top-color: #5C1C2B; }
+.stat-card:nth-child(4) { border-top-color: #5C1C2B; }
+.stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #5a7a7d; margin-bottom: 6px; }
+.stat-value { font-size: 24px; font-weight: 600; color: #034245; }
+.stat-sub { font-size: 12px; color: #888; margin-top: 2px; }
+
+.panel { background: white; border: 1px solid #e6dfc8; border-radius: 8px; padding: 18px 20px; margin-bottom: 20px; }
+.panel h2 { margin: 0 0 12px; font-size: 15px; font-weight: 600; }
+.chart-wrap { height: 260px; position: relative; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 8px; border-bottom: 2px solid #034245; font-weight: 600; color: #034245; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
+td { padding: 9px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafafa; }
+
+.broker-name { font-weight: 500; }
+.section-divider { border-left: 2px solid #5C1C2B; }
+.pct-bar-wrap { display: flex; align-items: center; gap: 8px; min-width: 100px; }
+.pct-bar-bg { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+.pct-bar-fill { height: 100%; border-radius: 3px; }
+.pct-val { width: 38px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+.pct-na { color: #bbb; font-style: italic; }
+
+.status-cell, .att-cell {
+  cursor: pointer; user-select: none;
+  width: 30px; height: 30px; line-height: 30px;
+  text-align: center; border-radius: 6px;
+  display: inline-block; transition: background 0.1s; font-size: 15px;
+}
+.status-cell:hover, .att-cell:hover { background: #f0f0f0; }
+.status-Yes { background: #d4edda; }
+.status-Partial { background: #fff3cd; }
+.status-No { background: #f8d7da; }
+.status-NA { background: transparent; color: #ccc; }
+.status-empty { color: #ddd; }
+.att-Present { background: #EEFAFF; color: #034245; }
+.att-Absent { background: #f8cbad; }
+.att-empty { color: #ddd; }
+.disabled { opacity: 0.35; pointer-events: none; }
+.trend { letter-spacing: 3px; font-size: 14px; }
+
+.grid-table th, .grid-table td { padding: 5px 4px; text-align: center; }
+.grid-table th:first-child, .grid-table td:first-child { text-align: left; padding-left: 8px; min-width: 90px; }
+.grid-table .week-header { font-size: 11px; color: #666; font-weight: 500; }
+.grid-table .sub-header { font-size: 10px; color: #999; font-weight: 400; padding-top: 0; }
+.grid-table .week-block { border-left: 1px solid #eee; }
+
+.controls { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.btn { background: white; border: 1px solid #d0d0d0; border-radius: 6px; padding: 6px 12px; font-size: 13px; cursor: pointer; color: #333; font-family: inherit; }
+.btn:hover { background: #f5f5f5; border-color: #999; }
+.btn-primary { background: #034245; color: white; border-color: #034245; }
+.btn-primary:hover { background: #022d2f; }
+.legend { display: flex; gap: 14px; font-size: 12px; color: #666; align-items: center; flex-wrap: wrap; }
+.legend-item { display: flex; gap: 5px; align-items: center; }
+.legend-divider { width: 1px; height: 14px; background: #ddd; }
+.note { font-size: 12px; color: #888; margin-top: 10px; font-style: italic; }
+input[type="date"] { padding: 5px 8px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; font-size: 13px; }
+
+.week-select { padding: 6px 10px; border: 1px solid #034245; border-radius: 6px; font-family: inherit; font-size: 14px; background: white; color: #034245; font-weight: 600; cursor: pointer; }
+.meeting-table th, .meeting-table td { padding: 8px 10px; text-align: left; vertical-align: middle; }
+.meeting-table td:nth-child(2), .meeting-table td:nth-child(4) { text-align: center; width: 50px; }
+.meeting-table td:nth-child(3) { color: #555; font-style: italic; max-width: 260px; }
+.meeting-table td:nth-child(5) { width: 38%; }
+.commit-prior-empty { color: #bbb; font-style: italic; }
+.commit-input { width: 100%; padding: 6px 10px; border: 1px solid #d0d0d0; border-radius: 5px; font-family: inherit; font-size: 13px; background: #FAF7EB; }
+.commit-input:focus { outline: none; border-color: #034245; background: white; box-shadow: 0 0 0 2px rgba(3,66,69,0.15); }
+.commit-input.has-value { background: white; }
+.remove-broker { opacity: 0; transition: opacity 0.15s; color: #c00; cursor: pointer; margin-left: 6px; font-size: 12px; font-weight: 600; display: inline-block; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 50%; background: #fde8e8; }
+tr:hover .remove-broker { opacity: 1; }
+.remove-broker:hover { background: #f5b5b5; }
+
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 100; }
+.modal-backdrop.open { display: flex; }
+.modal { background: white; border-radius: 10px; padding: 20px 24px; max-width: 420px; width: 90%; }
+.modal h3 { margin: 0 0 12px; font-size: 16px; }
+.modal label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; margin-top: 10px; }
+.modal input { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+
+/* Password gate */
+#gate { position: fixed; inset: 0; background: #FAF7EB; display: flex; align-items: center; justify-content: center; z-index: 999; }
+.gate-card { background: white; border: 1px solid #e6dfc8; border-radius: 12px; padding: 40px 36px; width: 340px; text-align: center; }
+.gate-card h2 { color: #034245; font-size: 20px; margin-bottom: 6px; }
+.gate-card p { color: #666; font-size: 13px; margin-bottom: 24px; }
+.gate-input { width: 100%; padding: 9px 12px; font-size: 14px; border: 1px solid #d0d0d0; border-radius: 6px; font-family: inherit; margin-bottom: 12px; }
+.gate-error { color: #c00; font-size: 13px; margin-top: 8px; }
+
+/* Saving indicator */
+#save-indicator { position: fixed; bottom: 16px; right: 20px; background: #034245; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; opacity: 0; transition: opacity .3s; pointer-events: none; }
+#save-indicator.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- Password gate -->
+<div id="gate">
+  <div class="gate-card">
+    <h2>Cross Street</h2>
+    <p>Broker Commitment Tracker</p>
+    <input type="password" class="gate-input" id="gateInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="btn btn-primary" style="width:100%;padding:9px" onclick="checkPassword()">Sign in</button>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+</div>
+
+<h1>Broker Commitment Tracker</h1>
+<div class="subtitle">Click any cell to cycle through states. Attendance: Present → Absent → blank. Status: ✅ → ⚠️ → ❌ → N/A → blank. Changes save automatically.</div>
+
+<div class="stat-row" id="statRow"></div>
+
+<div class="panel">
+  <h2>This Week's Meeting</h2>
+  <div class="controls">
+    <label style="font-size:13px;color:#555">Showing week:</label>
+    <select id="weekSelector" class="week-select" onchange="renderMeeting()"></select>
+    <span style="flex:1"></span>
+    <span style="font-size:12px;color:#888">Click attendance/status to cycle. Type commitment and click away to save.</span>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="meeting-table" id="meetingTable">
+      <thead>
+        <tr>
+          <th>Broker</th><th>Att</th><th>Last Week's Commitment</th><th>Status</th><th>This Week's Commitment</th>
+        </tr>
+      </thead>
+      <tbody id="meetingTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Team Trend by Week</h2>
+  <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+</div>
+
+<div class="panel">
+  <h2>Per-Broker Dashboard</h2>
+  <div class="legend">
+    <div class="legend-item"><span>🟦</span> Present</div>
+    <div class="legend-item"><span>🟧</span> Absent</div>
+    <div class="legend-divider"></div>
+    <div class="legend-item"><span>✅</span> Yes (1.0)</div>
+    <div class="legend-item"><span>⚠️</span> Partial (0.5)</div>
+    <div class="legend-item"><span>❌</span> No (0)</div>
+    <div class="legend-item"><span>·</span> N/A or blank (excluded)</div>
+  </div>
+  <table id="brokerTable" style="margin-top:14px">
+    <thead>
+      <tr>
+        <th rowspan="2">Broker</th>
+        <th colspan="4" style="border-bottom:1px solid #eee;text-align:center;padding-bottom:4px">Attendance</th>
+        <th colspan="5" class="section-divider" style="border-bottom:1px solid #eee;text-align:center;padding-bottom:4px">Commitments</th>
+        <th rowspan="2" class="section-divider">Recent (oldest → newest)</th>
+      </tr>
+      <tr>
+        <th>Meetings</th><th>Present</th><th>Absent</th><th>Attend %</th>
+        <th class="section-divider">Total</th><th>✅</th><th>⚠️</th><th>❌</th><th>Completion %</th>
+      </tr>
+    </thead>
+    <tbody id="brokerTbody"></tbody>
+  </table>
+</div>
+
+<div class="panel">
+  <h2>Weekly Status Grid</h2>
+  <div class="controls">
+    <button class="btn btn-primary" onclick="addWeek()">+ Add new week</button>
+    <button class="btn btn-primary" onclick="addBroker()">+ Add broker</button>
+    <button class="btn" onclick="exportJSON()">Export data</button>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="grid-table" id="gridTable"></table>
+  </div>
+  <div class="note">Each week: left = Attendance (🟦 Present / 🟧 Absent), right = Commitment status. Absent = excluded from completion %.</div>
+</div>
+
+<!-- Add week modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3>Add new week</h3>
+    <label>Meeting date</label>
+    <input type="date" id="newWeekDate">
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmAddWeek()">Add week</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add broker modal -->
+<div class="modal-backdrop" id="brokerModal">
+  <div class="modal">
+    <h3>Add broker</h3>
+    <label>First name</label>
+    <input type="text" id="newBrokerName" placeholder="e.g. Olivia" onkeydown="if(event.key==='Enter')confirmAddBroker()">
+    <div class="modal-actions">
+      <button class="btn" onclick="closeBrokerModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmAddBroker()">Add broker</button>
+    </div>
+  </div>
+</div>
+
+<div id="save-indicator">Saving...</div>
+
+<script>
+// ─── CONFIG ─────────────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://jddtvellclfpwjrehxpu.supabase.co'
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkZHR2ZWxsY2xmcHdqcmVoeHB1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMjY1MjIsImV4cCI6MjA5NzgwMjUyMn0.cVnIBcbRLLBWDIKgnpKp_Lc3W-CXz6eWeiCzn9sDgT4'
+const SITE_PASSWORD = 'MHSJ$ales'
+// ────────────────────────────────────────────────────────────────────────────
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+// Password gate
+function checkPassword() {
+  const val = document.getElementById('gateInput').value
+  if (val === SITE_PASSWORD) {
+    document.getElementById('gate').style.display = 'none'
+    init()
+  } else {
+    document.getElementById('gateError').textContent = 'Incorrect password.'
+    document.getElementById('gateInput').value = ''
+    document.getElementById('gateInput').focus()
+  }
+}
+document.getElementById('gateInput').focus()
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const DEFAULT_DATA = {
+  brokers: ["Emma","Jeremy","Evan","Srishti","Connor","Erin","Steph","Julia","Jodi","Judd","Lilly","Nathan","Ivan","Arianna","Susan","Michael","Sarah","Mirela","Ben","Diana"],
+  weeks: ["2026-05-13","2026-05-20","2026-05-27","2026-06-03","2026-06-10","2026-06-17"],
+  attendance: {"2026-05-13":{"Emma":"Present","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Present","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"","Ivan":"","Arianna":"Present","Susan":"Present","Michael":"Present","Sarah":"Present","Mirela":"Present","Ben":"","Diana":""},"2026-05-20":{"Emma":"Absent","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Absent","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Absent","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Present","Ben":"","Diana":""},"2026-05-27":{"Emma":"Present","Jeremy":"Present","Evan":"Absent","Srishti":"Present","Connor":"Absent","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Absent","Judd":"Absent","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Present","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Absent","Ben":"","Diana":""},"2026-06-03":{"Emma":"Present","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Present","Erin":"Present","Steph":"Absent","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Present","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Absent","Ben":"Present","Diana":"Present"},"2026-06-10":{"Emma":"Present","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Present","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Absent","Arianna":"Absent","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Absent","Ben":"Present","Diana":"Absent"},"2026-06-17":{"Emma":"Absent","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Absent","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Present","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Present","Ben":"Absent","Diana":"Absent"}},
+  status: {"2026-05-13":{"Emma":"NA","Jeremy":"No","Evan":"Yes","Srishti":"Partial","Connor":"Yes","Erin":"NA","Steph":"No","Julia":"Yes","Jodi":"No","Judd":"Yes","Lilly":"Yes","Nathan":"NA","Ivan":"NA","Arianna":"NA","Susan":"Yes","Michael":"No","Sarah":"No","Mirela":"NA","Ben":"","Diana":""},"2026-05-20":{"Emma":"NA","Jeremy":"Yes","Evan":"Yes","Srishti":"Partial","Connor":"","Erin":"Partial","Steph":"Yes","Julia":"Yes","Jodi":"Partial","Judd":"Partial","Lilly":"Yes","Nathan":"","Ivan":"","Arianna":"","Susan":"","Michael":"Yes","Sarah":"No","Mirela":"Yes","Ben":"","Diana":""},"2026-05-27":{"Emma":"","Jeremy":"No","Evan":"","Srishti":"Yes","Connor":"","Erin":"No","Steph":"Yes","Julia":"Yes","Jodi":"","Judd":"","Lilly":"Partial","Nathan":"","Ivan":"Yes","Arianna":"","Susan":"","Michael":"No","Sarah":"Yes","Mirela":"","Ben":"","Diana":""},"2026-06-03":{"Emma":"Yes","Jeremy":"Yes","Evan":"Yes","Srishti":"Yes","Connor":"No","Erin":"No","Steph":"","Julia":"Yes","Jodi":"No","Judd":"Partial","Lilly":"Yes","Nathan":"","Ivan":"Yes","Arianna":"Yes","Susan":"","Michael":"Partial","Sarah":"Partial","Mirela":"","Ben":"","Diana":""},"2026-06-10":{"Emma":"Partial","Jeremy":"Yes","Evan":"Yes","Srishti":"Partial","Connor":"Yes","Erin":"Yes","Steph":"","Julia":"Yes","Jodi":"Yes","Judd":"","Lilly":"Yes","Nathan":"","Ivan":"","Arianna":"","Susan":"","Michael":"No","Sarah":"Partial","Mirela":"","Ben":"Yes","Diana":""},"2026-06-17":{"Emma":"","Jeremy":"Yes","Evan":"Partial","Srishti":"Yes","Connor":"Yes","Erin":"Yes","Steph":"Yes","Julia":"Yes","Jodi":"Yes","Judd":"Partial","Lilly":"Yes","Nathan":"","Ivan":"Yes","Arianna":"","Susan":"","Michael":"No","Sarah":"No","Mirela":"","Ben":"","Diana":""}},
+  commitments: {"2026-05-13":{"Emma":"Learn more about tax advantages","Jeremy":"Sharpen up logo/branding","Evan":"Start building buyer consult","Srishti":"Post 2 videos","Connor":"2 RE influencer articles","Erin":"Solidify buyer process","Steph":"Solidify plan for new video series 'Design on a Dime' / 'SpaceLift'","Julia":"1 video of a listing you got under contract w/ Sebastian","Jodi":"Send out 15 new renewal buyer guides","Judd":"Solidify how to structure the day","Lilly":"Time block calendar","Nathan":"3 rental clients closed or resigned","Ivan":"","Arianna":"Make a post on IG","Susan":"Have a brainstorm session on growing a pipeline; launch website","Michael":"Boost a reel and DM everyone that commented on it","Sarah":"Spend 1 hour on how Claude can optimize my business","Mirela":"Finish 12-hour CE course","Ben":"","Diana":""},"2026-05-20":{"Emma":"","Jeremy":"Finish home page on website","Evan":"Determine yes/no are you buying this home","Srishti":"Finalize intake form","Connor":"","Erin":"Develop physical \"thing\" for event","Steph":"Order custom open house signs","Julia":"Shoot another video on new listing","Jodi":"Update Client Giant / two closing gifts / HomeBot","Judd":"Post on a house in Gold Coast","Lilly":"Reach out to 20 new IG followers","Nathan":"","Ivan":"Introduce yourself to 30 new people at event","Arianna":"","Susan":"","Michael":"Cold call 5 potential sellers based on recently sold listings","Sarah":"CLAUDE","Mirela":"Pamphlet for buyer/renter consult","Ben":"","Diana":""},"2026-05-27":{"Emma":"Edit and post listing video for 1529 Touhy","Jeremy":"Finalize logo design for JPs brand","Evan":"","Srishti":"Visit two properties to get content","Connor":"","Erin":"Cold call 5 Whipple-ish owners","Steph":"Revamp agent bio page to maximize SEO","Julia":"Post something on social media about client experience","Jodi":"","Judd":"","Lilly":"Organize email ALL OF IT","Nathan":"","Ivan":"Deliver 30 postcards","Arianna":"Time block calendar!","Susan":"","Michael":"5 seller cold calls","Sarah":"Finalize home page","Mirela":"","Ben":"","Diana":""},"2026-06-03":{"Emma":"100% update biz tracker","Jeremy":"Put together a postcard design AND present logo","Evan":"Build a rent vs. buy calculator - branded","Srishti":"Post three videos: one where she is talking","Connor":"Two hours of research on CRE CE \"stuff\"","Erin":"Send postcard for closing Friday","Steph":"","Julia":"Paid ad on IG for new listing w/ Emma","Jodi":"Client Giant + 2 closing gifts delivered","Judd":"","Lilly":"Post one IG Reel","Nathan":"","Ivan":"Add past deals to website page - 15 deals","Arianna":"Follow time block schedule - 90%","Susan":"","Michael":"Post one new IG Reel","Sarah":"Dedicate 1 hour to planning summer event","Mirela":"","Ben":"One IG post","Diana":"Follow up with three buyers and one seller"},"2026-06-10":{"Emma":"Connect with Olivia about branding","Jeremy":"Send out postcard","Evan":"Go under contract on his house","Srishti":"Time block calendar","Connor":"Build landing page","Erin":"Come up with closing gift for client in LA","Steph":"Pick a date for end of summer rooftop party w/ EF","Julia":"Brainstorm and schedule video with Sebastian","Jodi":"Prep summer welcome/buyer guide","Judd":"Prep data/process for building to sell","Lilly":"Connect w/ Olivia on buyer guide","Nathan":"","Ivan":"","Arianna":"","Susan":"","Michael":"Post reel","Sarah":"Just sold postcards with Olivia","Mirela":"","Ben":"Send out 20 baseball calendars","Diana":""},"2026-06-17":{"Emma":"","Jeremy":"Take a headshot for website","Evan":"Tie up as much as possible before vacation","Srishti":"Post recently sold","Connor":"","Erin":"","Steph":"Get three new Google reviews","Julia":"Set up Google Local Services Ad","Jodi":"Plan to switch website host","Judd":"Talking points for meeting with Steve next week","Lilly":"Home owner/anniversary market update","Nathan":"","Ivan":"Ask for 10 reviews","Arianna":"Set up GMB account","Susan":"","Michael":"Voiceover","Sarah":"Finish website copy","Mirela":"Update half of previous leads in Zoho","Ben":"","Diana":""}}
+}
+
+const STATUS_CYCLE = ["", "Yes", "Partial", "No", "NA"]
+const ATT_CYCLE    = ["", "Present", "Absent"]
+const STATUS_ICONS = { "Yes":"✅","Partial":"⚠️","No":"❌","NA":"·","":"" }
+const ATT_ICONS    = { "Present":"P","Absent":"A","":"·" }
+const SCORE        = { "Yes":1,"Partial":0.5,"No":0 }
+
+let data = null
+let saveTimer = null
+
+// ─── SUPABASE ────────────────────────────────────────────────────────────────
+async function loadFromSupabase() {
+  const { data: row, error } = await sb.from('app_state').select('data').eq('id', 1).maybeSingle()
+  if (error) { console.error(error); return null }
+  return row?.data ?? null
+}
+
+async function saveToSupabase() {
+  showSaving()
+  const { error } = await sb.from('app_state').upsert({ id: 1, data }, { onConflict: 'id' })
+  if (error) console.error('Save error:', error)
+  hideSaving()
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer)
+  saveTimer = setTimeout(saveToSupabase, 800)
+}
+
+function showSaving() {
+  document.getElementById('save-indicator').textContent = 'Saving...'
+  document.getElementById('save-indicator').classList.add('show')
+}
+function hideSaving() {
+  document.getElementById('save-indicator').textContent = 'Saved'
+  setTimeout(() => document.getElementById('save-indicator').classList.remove('show'), 1500)
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+async function init() {
+  const remote = await loadFromSupabase()
+  data = remote ?? JSON.parse(JSON.stringify(DEFAULT_DATA))
+  if (!remote) {
+    // First load — seed with historical data
+    await saveToSupabase()
+  }
+  ensureShape()
+  renderAll()
+}
+
+function ensureShape() {
+  if (!data.brokers) data.brokers = DEFAULT_DATA.brokers.slice()
+  if (!data.attendance) data.attendance = {}
+  if (!data.status) data.status = {}
+  if (!data.commitments) data.commitments = {}
+  for (const w of data.weeks) {
+    if (!data.attendance[w]) data.attendance[w] = {}
+    if (!data.status[w]) data.status[w] = {}
+    if (!data.commitments[w]) data.commitments[w] = {}
+    for (const b of data.brokers) {
+      if (!(b in data.attendance[w])) data.attendance[w][b] = ""
+      if (!(b in data.status[w])) data.status[w][b] = ""
+      if (!(b in data.commitments[w])) data.commitments[w][b] = ""
+    }
+  }
+}
+
+// ─── STATS ───────────────────────────────────────────────────────────────────
+function brokerStats(broker) {
+  let meetings=0, present=0, absent=0, total=0, yes=0, partial=0, no=0, sum=0
+  for (const w of data.weeks) {
+    const att = data.attendance[w]?.[broker] ?? ""
+    if (att === "Present" || att === "Absent") { meetings++; if (att==="Present") present++; else absent++ }
+    if (att !== "Absent") {
+      const s = data.status[w]?.[broker] ?? ""
+      if (s==="Yes"||s==="Partial"||s==="No") { total++; sum+=SCORE[s]; if(s==="Yes")yes++; else if(s==="Partial")partial++; else no++ }
+    }
+  }
+  return { meetings, present, absent, attPct: meetings>0?present/meetings:null, total, yes, partial, no, complPct: total>0?sum/total:null }
+}
+
+function weekStats(week) {
+  let meetings=0, present=0, total=0, sum=0
+  for (const b of data.brokers) {
+    const att = data.attendance[week]?.[b] ?? ""
+    if (att==="Present"||att==="Absent") { meetings++; if(att==="Present") present++ }
+    if (att!=="Absent") { const s=data.status[week]?.[b]??""; if(s==="Yes"||s==="Partial"||s==="No"){total++;sum+=SCORE[s]} }
+  }
+  return { attPct:meetings>0?present/meetings:null, complPct:total>0?sum/total:null, meetings, present, total }
+}
+
+function pctColor(p) { if(p===null)return"#ccc"; if(p>=0.8)return"#34a853"; if(p>=0.5)return"#f9ab00"; return"#ea4335" }
+function fmtPct(p) { if(p===null)return'<span class="pct-na">—</span>'; return Math.round(p*100)+"%" }
+function formatDate(iso) { return new Date(iso+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}) }
+function escAttr(s) { return String(s).replace(/&/g,"&amp;").replace(/'/g,"&#39;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+
+// ─── RENDERS ─────────────────────────────────────────────────────────────────
+function renderStats() {
+  const sw = data.weeks.slice().sort()
+  let teamTotal=0, teamSum=0, totalMtgs=0, totalPresent=0
+  for (const w of sw) {
+    const s = weekStats(w)
+    totalMtgs+=s.meetings; totalPresent+=s.present
+    if(s.complPct!==null){teamTotal+=s.total;teamSum+=s.total*s.complPct}
+  }
+  const latest = sw[sw.length-1]
+  const ls = latest?weekStats(latest):null
+  const cards = [
+    { label:"Roster size", value:data.brokers.length, sub:data.weeks.length+" week"+(data.weeks.length===1?"":"s")+" tracked" },
+    { label:"Team avg attendance", value:totalMtgs>0?Math.round(totalPresent/totalMtgs*100)+"%":"—", sub:totalPresent+" of "+totalMtgs+" attendances" },
+    { label:"Team avg completion", value:teamTotal>0?Math.round(teamSum/teamTotal*100)+"%":"—", sub:teamTotal+" commitments evaluated" },
+    { label:"Latest week", value:ls?.complPct!=null?Math.round(ls.complPct*100)+"%":"—", sub:latest?formatDate(latest)+" completion":"—" },
+  ]
+  document.getElementById("statRow").innerHTML = cards.map(c=>`<div class="stat-card"><div class="stat-label">${c.label}</div><div class="stat-value">${c.value}</div><div class="stat-sub">${c.sub}</div></div>`).join("")
+}
+
+function renderBrokerTable() {
+  const sw = data.weeks.slice().sort()
+  document.getElementById("brokerTbody").innerHTML = data.brokers.map(b => {
+    const s = brokerStats(b)
+    const trend = sw.map(w => { const att=data.attendance[w]?.[b]??""; if(att==="Absent")return"✈"; return STATUS_ICONS[data.status[w]?.[b]??""||""]||"·" }).join(" ")
+    const aColor=pctColor(s.attPct), cColor=pctColor(s.complPct)
+    const aW=s.attPct!==null?Math.round(s.attPct*100):0, cW=s.complPct!==null?Math.round(s.complPct*100):0
+    return `<tr>
+      <td class="broker-name">${b}<span class="remove-broker" onclick="removeBroker('${escAttr(b)}')" title="Remove">×</span></td>
+      <td>${s.meetings}</td><td>${s.present}</td><td>${s.absent}</td>
+      <td><div class="pct-bar-wrap"><div class="pct-bar-bg"><div class="pct-bar-fill" style="width:${aW}%;background:${aColor}"></div></div><div class="pct-val">${fmtPct(s.attPct)}</div></div></td>
+      <td class="section-divider">${s.total}</td><td>${s.yes}</td><td>${s.partial}</td><td>${s.no}</td>
+      <td><div class="pct-bar-wrap"><div class="pct-bar-bg"><div class="pct-bar-fill" style="width:${cW}%;background:${cColor}"></div></div><div class="pct-val">${fmtPct(s.complPct)}</div></div></td>
+      <td class="trend section-divider">${trend}</td>
+    </tr>`
+  }).join("")
+}
+
+function renderGrid() {
+  const sw = data.weeks.slice().sort()
+  let html = "<thead><tr><th rowspan='2'>Broker</th>"
+  for (const w of sw) html += `<th colspan="2" class="week-block"><div class="week-header">${formatDate(w)}</div></th>`
+  html += "</tr><tr>"
+  for (const w of sw) html += `<th class="week-block sub-header">Att</th><th class="sub-header">Status</th>`
+  html += "</tr></thead><tbody>"
+  for (const b of data.brokers) {
+    html += `<tr><td class="broker-name">${b}</td>`
+    for (const w of sw) {
+      const att=data.attendance[w]?.[b]??"", status=data.status[w]?.[b]??""
+      const disabled=att==="Absent"
+      html += `<td class="week-block"><span class="att-cell att-${att||"empty"}" onclick="cycleAtt('${w}','${escAttr(b)}')">${ATT_ICONS[att]||"·"}</span></td>`
+      html += `<td><span class="status-cell ${disabled?"status-NA disabled":status?"status-"+status:"status-empty"}" ${disabled?"":` onclick="cycleStatus('${w}','${escAttr(b)}')"`}>${disabled?"✈":(STATUS_ICONS[status]||"·")}</span></td>`
+    }
+    html += "</tr>"
+  }
+  document.getElementById("gridTable").innerHTML = html + "</tbody>"
+}
+
+function renderWeekSelector() {
+  const sel = document.getElementById("weekSelector")
+  const sw = data.weeks.slice().sort()
+  const cur = sw.includes(sel.value) ? sel.value : sw[sw.length-1]
+  sel.innerHTML = sw.map(w=>`<option value="${w}" ${w===cur?"selected":""}>${formatDate(w)} — ${w}</option>`).join("")
+}
+
+function renderMeeting() {
+  const sel = document.getElementById("weekSelector")
+  const week = sel.value; if (!week) return
+  const sw = data.weeks.slice().sort()
+  const priorWeek = sw[sw.indexOf(week)-1] ?? null
+  document.getElementById("meetingTbody").innerHTML = data.brokers.map(b => {
+    const att=data.attendance[week]?.[b]??"", status=data.status[week]?.[b]??""
+    const disabled=att==="Absent"
+    const priorCommit=priorWeek?data.commitments[priorWeek]?.[b]??""  :""
+    const thisCommit=data.commitments[week]?.[b]??""
+    return `<tr>
+      <td class="broker-name">${b}</td>
+      <td><span class="att-cell att-${att||"empty"}" onclick="cycleAtt('${week}','${escAttr(b)}')">${ATT_ICONS[att]||"·"}</span></td>
+      <td>${priorCommit?escAttr(priorCommit):'<span class="commit-prior-empty">—</span>'}</td>
+      <td><span class="status-cell ${disabled?"status-NA disabled":status?"status-"+status:"status-empty"}" ${disabled?"":` onclick="cycleStatus('${week}','${escAttr(b)}')"`}>${disabled?"✈":(STATUS_ICONS[status]||"·")}</span></td>
+      <td><input type="text" class="commit-input${thisCommit?" has-value":""}" value="${escAttr(thisCommit)}" placeholder="Type this week's commitment..." onblur="updateCommitment('${week}','${escAttr(b)}',this.value)"></td>
+    </tr>`
+  }).join("")
+}
+
+let chart
+function renderChart() {
+  const sw = data.weeks.slice().sort()
+  const ctx = document.getElementById("trendChart").getContext("2d")
+  if (chart) chart.destroy()
+  chart = new Chart(ctx, {
+    type:"line",
+    data:{
+      labels:sw.map(formatDate),
+      datasets:[
+        {label:"Attendance %",data:sw.map(w=>{const s=weekStats(w);return s.attPct!==null?Math.round(s.attPct*100):null}),borderColor:"#5C1C2B",backgroundColor:"rgba(92,28,43,0.08)",tension:0.25,pointRadius:5,pointBackgroundColor:"#5C1C2B",spanGaps:true,fill:false,borderDash:[4,4]},
+        {label:"Completion %",data:sw.map(w=>{const s=weekStats(w);return s.complPct!==null?Math.round(s.complPct*100):null}),borderColor:"#034245",backgroundColor:"rgba(3,66,69,0.1)",tension:0.25,pointRadius:5,pointBackgroundColor:"#034245",spanGaps:true,fill:true}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,ticks:{callback:v=>v+"%"}},x:{grid:{display:false}}},plugins:{legend:{position:"top",labels:{boxWidth:14}}}}
+  })
+}
+
+function renderAll() { renderStats(); renderWeekSelector(); renderMeeting(); renderBrokerTable(); renderGrid(); renderChart() }
+
+// ─── INTERACTIONS ─────────────────────────────────────────────────────────────
+function cycleAtt(week, broker) {
+  const cur=data.attendance[week]?.[broker]??""
+  data.attendance[week][broker]=ATT_CYCLE[(ATT_CYCLE.indexOf(cur)+1)%ATT_CYCLE.length]
+  if (data.attendance[week][broker]==="Absent") data.status[week][broker]="NA"
+  renderAll(); scheduleSave()
+}
+function cycleStatus(week, broker) {
+  const cur=data.status[week]?.[broker]??""
+  data.status[week][broker]=STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur)+1)%STATUS_CYCLE.length]
+  renderAll(); scheduleSave()
+}
+function updateCommitment(week, broker, text) {
+  if (data.commitments[week][broker]===text) return
+  data.commitments[week][broker]=text
+  scheduleSave()
+}
+
+// ─── ADD WEEK / BROKER ────────────────────────────────────────────────────────
+function addWeek() {
+  const last=data.weeks.slice().sort().pop()
+  const next=new Date(last+"T12:00:00"); next.setDate(next.getDate()+7)
+  document.getElementById("newWeekDate").value=next.toISOString().slice(0,10)
+  document.getElementById("modal").classList.add("open")
+}
+function closeModal() { document.getElementById("modal").classList.remove("open") }
+function confirmAddWeek() {
+  const d=document.getElementById("newWeekDate").value; if(!d) return
+  if (!data.weeks.includes(d)) {
+    data.weeks.push(d)
+    data.attendance[d]=Object.fromEntries(data.brokers.map(b=>[b,""]))
+    data.status[d]=Object.fromEntries(data.brokers.map(b=>[b,""]))
+    data.commitments[d]=Object.fromEntries(data.brokers.map(b=>[b,""]))
+    renderAll(); saveToSupabase()
+  }
+  closeModal()
+}
+
+function addBroker() {
+  document.getElementById("newBrokerName").value=""
+  document.getElementById("brokerModal").classList.add("open")
+  setTimeout(()=>document.getElementById("newBrokerName").focus(),50)
+}
+function closeBrokerModal() { document.getElementById("brokerModal").classList.remove("open") }
+function confirmAddBroker() {
+  const name=document.getElementById("newBrokerName").value.trim(); if(!name) return
+  if (data.brokers.some(b=>b.toLowerCase()===name.toLowerCase())) { alert(`"${name}" is already on the roster.`); return }
+  data.brokers.push(name)
+  for (const w of data.weeks) { data.attendance[w][name]=""; data.status[w][name]=""; data.commitments[w][name]="" }
+  renderAll(); saveToSupabase(); closeBrokerModal()
+}
+
+function removeBroker(name) {
+  if (!confirm(`Remove ${name}? Their historical data will be deleted.`)) return
+  data.brokers=data.brokers.filter(b=>b!==name)
+  for (const w of data.weeks) { delete data.attendance[w][name]; delete data.status[w][name]; delete data.commitments[w][name] }
+  renderAll(); saveToSupabase()
+}
+
+function exportJSON() {
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"})
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob)
+  a.download="broker_tracker_data.json"; a.click(); URL.revokeObjectURL(a.href)
+}
+</script>
+</body>
+</html>
