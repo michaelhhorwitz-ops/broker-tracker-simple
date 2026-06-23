@@ -384,7 +384,7 @@ function renderBrokerTable() {
   const sw = data.weeks.slice().sort()
   document.getElementById("brokerTbody").innerHTML = data.brokers.map(b => {
     const s = brokerStats(b)
-    const trend = sw.map(w => { const att=data.attendance[w]?.[b]??""; if(att==="Absent")return"✈"; return STATUS_ICONS[data.status[w]?.[b]??""||""]||"·" }).join(" ")
+    const trend = sw.map(w => { const att=data.attendance[w]?.[b]||""; if(att==="Absent")return"✈"; return STATUS_ICONS[data.status[w]?.[b]||""]||"·" }).join(" ")
     const aColor=pctColor(s.attPct), cColor=pctColor(s.complPct)
     const aW=s.attPct!==null?Math.round(s.attPct*100):0, cW=s.complPct!==null?Math.round(s.complPct*100):0
     return `<tr>
