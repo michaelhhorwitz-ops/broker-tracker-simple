@@ -24,7 +24,6 @@ body {
 h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; color: #034245; }
 .subtitle { color: #666; font-size: 13px; margin-bottom: 24px; }
 .panel h2 { color: #034245; }
-
 .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
 .stat-card { background: white; border: 1px solid #e6dfc8; border-radius: 8px; padding: 14px 16px; border-top: 3px solid #034245; }
 .stat-card:nth-child(2) { border-top-color: #5C1C2B; }
@@ -32,17 +31,14 @@ h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; color: #034245; }
 .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #5a7a7d; margin-bottom: 6px; }
 .stat-value { font-size: 24px; font-weight: 600; color: #034245; }
 .stat-sub { font-size: 12px; color: #888; margin-top: 2px; }
-
 .panel { background: white; border: 1px solid #e6dfc8; border-radius: 8px; padding: 18px 20px; margin-bottom: 20px; }
 .panel h2 { margin: 0 0 12px; font-size: 15px; font-weight: 600; }
 .chart-wrap { height: 260px; position: relative; }
-
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { text-align: left; padding: 10px 8px; border-bottom: 2px solid #034245; font-weight: 600; color: #034245; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
 td { padding: 9px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fafafa; }
-
 .broker-name { font-weight: 500; }
 .section-divider { border-left: 2px solid #5C1C2B; }
 .pct-bar-wrap { display: flex; align-items: center; gap: 8px; min-width: 100px; }
@@ -50,13 +46,7 @@ tr:hover td { background: #fafafa; }
 .pct-bar-fill { height: 100%; border-radius: 3px; }
 .pct-val { width: 38px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
 .pct-na { color: #bbb; font-style: italic; }
-
-.status-cell, .att-cell {
-  cursor: pointer; user-select: none;
-  width: 30px; height: 30px; line-height: 30px;
-  text-align: center; border-radius: 6px;
-  display: inline-block; transition: background 0.1s; font-size: 15px;
-}
+.status-cell, .att-cell { cursor: pointer; user-select: none; width: 30px; height: 30px; line-height: 30px; text-align: center; border-radius: 6px; display: inline-block; transition: background 0.1s; font-size: 15px; }
 .status-cell:hover, .att-cell:hover { background: #f0f0f0; }
 .status-Yes { background: #d4edda; }
 .status-Partial { background: #fff3cd; }
@@ -68,13 +58,11 @@ tr:hover td { background: #fafafa; }
 .att-empty { color: #ddd; }
 .disabled { opacity: 0.35; pointer-events: none; }
 .trend { letter-spacing: 3px; font-size: 14px; }
-
 .grid-table th, .grid-table td { padding: 5px 4px; text-align: center; }
 .grid-table th:first-child, .grid-table td:first-child { text-align: left; padding-left: 8px; min-width: 90px; }
 .grid-table .week-header { font-size: 11px; color: #666; font-weight: 500; }
 .grid-table .sub-header { font-size: 10px; color: #999; font-weight: 400; padding-top: 0; }
 .grid-table .week-block { border-left: 1px solid #eee; }
-
 .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
 .btn { background: white; border: 1px solid #d0d0d0; border-radius: 6px; padding: 6px 12px; font-size: 13px; cursor: pointer; color: #333; font-family: inherit; }
 .btn:hover { background: #f5f5f5; border-color: #999; }
@@ -85,7 +73,6 @@ tr:hover td { background: #fafafa; }
 .legend-divider { width: 1px; height: 14px; background: #ddd; }
 .note { font-size: 12px; color: #888; margin-top: 10px; font-style: italic; }
 input[type="date"] { padding: 5px 8px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; font-size: 13px; }
-
 .week-select { padding: 6px 10px; border: 1px solid #034245; border-radius: 6px; font-family: inherit; font-size: 14px; background: white; color: #034245; font-weight: 600; cursor: pointer; }
 .meeting-table th, .meeting-table td { padding: 8px 10px; text-align: left; vertical-align: middle; }
 .meeting-table td:nth-child(2), .meeting-table td:nth-child(4) { text-align: center; width: 50px; }
@@ -98,7 +85,6 @@ input[type="date"] { padding: 5px 8px; border: 1px solid #ccc; border-radius: 5p
 .remove-broker { opacity: 0; transition: opacity 0.15s; color: #c00; cursor: pointer; margin-left: 6px; font-size: 12px; font-weight: 600; display: inline-block; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 50%; background: #fde8e8; }
 tr:hover .remove-broker { opacity: 1; }
 .remove-broker:hover { background: #f5b5b5; }
-
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 100; }
 .modal-backdrop.open { display: flex; }
 .modal { background: white; border-radius: 10px; padding: 20px 24px; max-width: 420px; width: 90%; }
@@ -106,14 +92,13 @@ tr:hover .remove-broker { opacity: 1; }
 .modal label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; margin-top: 10px; }
 .modal input { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
-
 #gate { position: fixed; inset: 0; background: #FAF7EB; display: flex; align-items: center; justify-content: center; z-index: 999; }
-.gate-card { background: white; border: 1px solid #e6dfc8; border-radius: 12px; padding: 40px 36px; width: 340px; text-align: center; }
+.gate-card { background: white; border: 1px solid #e6dfc8; border-radius: 12px; padding: 40px 36px; width: 360px; text-align: center; }
 .gate-card h2 { color: #034245; font-size: 20px; margin-bottom: 6px; }
 .gate-card p { color: #666; font-size: 13px; margin-bottom: 24px; }
-.gate-input { width: 100%; padding: 9px 12px; font-size: 14px; border: 1px solid #d0d0d0; border-radius: 6px; font-family: inherit; margin-bottom: 12px; }
+.gate-input { width: 100%; padding: 9px 12px; font-size: 14px; border: 1px solid #d0d0d0; border-radius: 6px; font-family: inherit; margin-bottom: 10px; }
+.gate-label { font-size: 11px; color: #888; text-align: left; display: block; margin-bottom: 4px; margin-top: 4px; }
 .gate-error { color: #c00; font-size: 13px; margin-top: 8px; }
-
 #save-indicator { position: fixed; bottom: 16px; right: 20px; background: #034245; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; opacity: 0; transition: opacity .3s; pointer-events: none; }
 #save-indicator.show { opacity: 1; pointer-events: auto; }
 </style>
@@ -124,14 +109,19 @@ tr:hover .remove-broker { opacity: 1; }
   <div class="gate-card">
     <h2>Cross Street</h2>
     <p>Broker Commitment Tracker</p>
+    <label class="gate-label">Password</label>
     <input type="password" class="gate-input" id="gateInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
-    <button class="btn btn-primary" style="width:100%;padding:9px" onclick="checkPassword()">Sign in</button>
+    <div id="keyWrap">
+      <label class="gate-label">API Key <span style="color:#aaa">(one-time setup per device)</span></label>
+      <input type="password" class="gate-input" id="gateKeyInput" placeholder="Paste API key here">
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:9px;margin-top:4px" onclick="checkPassword()">Sign in</button>
     <div class="gate-error" id="gateError"></div>
   </div>
 </div>
 
 <h1>Broker Commitment Tracker</h1>
-<div class="subtitle">Click any cell to cycle through states. Attendance: Present to Absent to blank. Status: Yes, Partial, No, NA, blank. Changes save automatically.</div>
+<div class="subtitle">Click any cell to cycle through states. Changes save automatically.</div>
 
 <div class="stat-row" id="statRow"></div>
 
@@ -145,11 +135,7 @@ tr:hover .remove-broker { opacity: 1; }
   </div>
   <div style="overflow-x:auto">
     <table class="meeting-table" id="meetingTable">
-      <thead>
-        <tr>
-          <th>Broker</th><th>Att</th><th>Last Week's Commitment</th><th>Status</th><th>This Week's Commitment</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Broker</th><th>Att</th><th>Last Week's Commitment</th><th>Status</th><th>This Week's Commitment</th></tr></thead>
       <tbody id="meetingTbody"></tbody>
     </table>
   </div>
@@ -163,13 +149,13 @@ tr:hover .remove-broker { opacity: 1; }
 <div class="panel">
   <h2>Per-Broker Dashboard</h2>
   <div class="legend">
-    <div class="legend-item">Present</div>
-    <div class="legend-item">Absent</div>
+    <div class="legend-item">P = Present</div>
+    <div class="legend-item">A = Absent</div>
     <div class="legend-divider"></div>
-    <div class="legend-item">Yes (1.0)</div>
-    <div class="legend-item">Partial (0.5)</div>
-    <div class="legend-item">No (0)</div>
-    <div class="legend-item">N/A or blank (excluded)</div>
+    <div class="legend-item">Y = Yes</div>
+    <div class="legend-item">~ = Partial</div>
+    <div class="legend-item">N = No</div>
+    <div class="legend-item">- = N/A (excluded)</div>
   </div>
   <table id="brokerTable" style="margin-top:14px">
     <thead>
@@ -177,11 +163,11 @@ tr:hover .remove-broker { opacity: 1; }
         <th rowspan="2">Broker</th>
         <th colspan="4" style="border-bottom:1px solid #eee;text-align:center;padding-bottom:4px">Attendance</th>
         <th colspan="5" class="section-divider" style="border-bottom:1px solid #eee;text-align:center;padding-bottom:4px">Commitments</th>
-        <th rowspan="2" class="section-divider">Recent Trend</th>
+        <th rowspan="2" class="section-divider">Trend</th>
       </tr>
       <tr>
         <th>Meetings</th><th>Present</th><th>Absent</th><th>Attend %</th>
-        <th class="section-divider">Total</th><th>Yes</th><th>Partial</th><th>No</th><th>Completion %</th>
+        <th class="section-divider">Total</th><th>Y</th><th>~</th><th>N</th><th>Completion %</th>
       </tr>
     </thead>
     <tbody id="brokerTbody"></tbody>
@@ -195,10 +181,8 @@ tr:hover .remove-broker { opacity: 1; }
     <button class="btn btn-primary" onclick="addBroker()">+ Add broker</button>
     <button class="btn" onclick="exportJSON()">Export data</button>
   </div>
-  <div style="overflow-x:auto">
-    <table class="grid-table" id="gridTable"></table>
-  </div>
-  <div class="note">Each week: left = Attendance (P=Present / A=Absent), right = Commitment status. Absent = excluded from completion %.</div>
+  <div style="overflow-x:auto"><table class="grid-table" id="gridTable"></table></div>
+  <div class="note">Each week: left = Attendance, right = Commitment status. Absent = excluded from completion %.</div>
 </div>
 
 <div class="modal-backdrop" id="modal">
@@ -228,27 +212,44 @@ tr:hover .remove-broker { opacity: 1; }
 <div id="save-indicator">Saving...</div>
 
 <script>
-const SUPABASE_URL  = 'https://jddtvellclfpwjrehxpu.supabase.co'
-const SUPABASE_KEY  = 'const SUPABASE_KEY = [90,88,108,75,97,71,98,72,89,50,108,80,97,85,112,73,86,122,73,120,84,109,108,73,84,110,82,53,99,67,73,54,73,107,112,88,86,67,74,57,46,101,121,74,112,99,51,77,105,79,105,74,122,100,88,66,104,89,109,70,122,90,83,73,115,73,110,74,108,90,105,73,54,73,109,112,107,90,72,82,50,90,87,120,115,89,50,120,109,99,72,100,113,99,109,86,111,101,72,66,49,73,105,119,105,99,109,57,115,90,83,73,54,73,109,70,117,98,50,52,105,76,67,74,112,89,88,81,105,79,106,69,51,79,68,73,121,77,106,89,49,77,106,73,115,73,109,86,52,99,67,73,54,77,106,65,53,78,122,103,119,77,106,85,121,77,110,48,46,99,86,110,73,66,99,98,82,76,76,66,87,68,73,75,103,110,112,75,112,95,76,99,51,87,45,67,88,122,54,101,87,101,105,67,122,110,57,115,68,103,84,52].map(c=>String.fromCharCode(c)).join('')'
-const SITE_PASSWORD = 'MHSJ$ales'
+var SUPABASE_URL = 'https://jddtvellclfpwjrehxpu.supabase.co'
+var SITE_PASSWORD = 'MHSJ$ales'
+var sb = null
 
-let sb = null
+function getStoredKey() { try { return localStorage.getItem('csre_sbkey') || '' } catch(e) { return '' } }
+function setStoredKey(k) { try { localStorage.setItem('csre_sbkey', k) } catch(e) {} }
 
 function checkPassword() {
-  const val = document.getElementById('gateInput').value
-  if (val === SITE_PASSWORD) {
-    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-    document.getElementById('gate').style.display = 'none'
-    init()
-  } else {
+  var pw = document.getElementById('gateInput').value
+  if (pw !== SITE_PASSWORD) {
     document.getElementById('gateError').textContent = 'Incorrect password.'
     document.getElementById('gateInput').value = ''
     document.getElementById('gateInput').focus()
+    return
   }
+  var keyWrap = document.getElementById('keyWrap')
+  var apiKey = ''
+  if (keyWrap.style.display !== 'none') {
+    apiKey = document.getElementById('gateKeyInput').value.trim()
+    if (!apiKey) { document.getElementById('gateError').textContent = 'Please paste the API key.'; return }
+    setStoredKey(apiKey)
+  } else {
+    apiKey = getStoredKey()
+  }
+  sb = supabase.createClient(SUPABASE_URL, apiKey)
+  document.getElementById('gate').style.display = 'none'
+  init()
 }
-document.getElementById('gateInput').focus()
 
-const DEFAULT_DATA = {
+// Hide API key field if already stored
+(function() {
+  if (getStoredKey()) {
+    document.getElementById('keyWrap').style.display = 'none'
+  }
+  document.getElementById('gateInput').focus()
+})()
+
+var DEFAULT_DATA = {
   brokers: ["Emma","Jeremy","Evan","Srishti","Connor","Erin","Steph","Julia","Jodi","Judd","Lilly","Nathan","Ivan","Arianna","Susan","Michael","Sarah","Mirela","Ben","Diana"],
   weeks: ["2026-05-13","2026-05-20","2026-05-27","2026-06-03","2026-06-10","2026-06-17"],
   attendance: {"2026-05-13":{"Emma":"Present","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Present","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"","Ivan":"","Arianna":"Present","Susan":"Present","Michael":"Present","Sarah":"Present","Mirela":"Present","Ben":"","Diana":""},"2026-05-20":{"Emma":"Absent","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Absent","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Absent","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Present","Ben":"","Diana":""},"2026-05-27":{"Emma":"Present","Jeremy":"Present","Evan":"Absent","Srishti":"Present","Connor":"Absent","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Absent","Judd":"Absent","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Present","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Absent","Ben":"","Diana":""},"2026-06-03":{"Emma":"Present","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Present","Erin":"Present","Steph":"Absent","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Present","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Absent","Ben":"Present","Diana":"Present"},"2026-06-10":{"Emma":"Present","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Present","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Absent","Arianna":"Absent","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Absent","Ben":"Present","Diana":"Absent"},"2026-06-17":{"Emma":"Absent","Jeremy":"Present","Evan":"Present","Srishti":"Present","Connor":"Absent","Erin":"Present","Steph":"Present","Julia":"Present","Jodi":"Present","Judd":"Present","Lilly":"Present","Nathan":"Absent","Ivan":"Present","Arianna":"Present","Susan":"Absent","Michael":"Present","Sarah":"Present","Mirela":"Present","Ben":"Absent","Diana":"Absent"}},
@@ -256,72 +257,56 @@ const DEFAULT_DATA = {
   commitments: {"2026-05-13":{"Emma":"Learn more about tax advantages","Jeremy":"Sharpen up logo/branding","Evan":"Start building buyer consult","Srishti":"Post 2 videos","Connor":"2 RE influencer articles","Erin":"Solidify buyer process","Steph":"Solidify plan for new video series","Julia":"1 video of a listing you got under contract","Jodi":"Send out 15 new renewal buyer guides","Judd":"Solidify how to structure the day","Lilly":"Time block calendar","Nathan":"3 rental clients closed or resigned","Ivan":"","Arianna":"Make a post on IG","Susan":"Have a brainstorm session on growing a pipeline; launch website","Michael":"Boost a reel and DM everyone that commented on it","Sarah":"Spend 1 hour on how Claude can optimize my business","Mirela":"Finish 12-hour CE course","Ben":"","Diana":""},"2026-05-20":{"Emma":"","Jeremy":"Finish home page on website","Evan":"Determine yes/no are you buying this home","Srishti":"Finalize intake form","Connor":"","Erin":"Develop physical thing for event","Steph":"Order custom open house signs","Julia":"Shoot another video on new listing","Jodi":"Update Client Giant / two closing gifts / HomeBot","Judd":"Post on a house in Gold Coast","Lilly":"Reach out to 20 new IG followers","Nathan":"","Ivan":"Introduce yourself to 30 new people at event","Arianna":"","Susan":"","Michael":"Cold call 5 potential sellers based on recently sold listings","Sarah":"CLAUDE","Mirela":"Pamphlet for buyer/renter consult","Ben":"","Diana":""},"2026-05-27":{"Emma":"Edit and post listing video for 1529 Touhy","Jeremy":"Finalize logo design for JPs brand","Evan":"","Srishti":"Visit two properties to get content","Connor":"","Erin":"Cold call 5 Whipple-ish owners","Steph":"Revamp agent bio page to maximize SEO","Julia":"Post something on social media about client experience","Jodi":"","Judd":"","Lilly":"Organize email ALL OF IT","Nathan":"","Ivan":"Deliver 30 postcards","Arianna":"Time block calendar","Susan":"","Michael":"5 seller cold calls","Sarah":"Finalize home page","Mirela":"","Ben":"","Diana":""},"2026-06-03":{"Emma":"100% update biz tracker","Jeremy":"Put together a postcard design AND present logo","Evan":"Build a rent vs. buy calculator - branded","Srishti":"Post three videos: one where she is talking","Connor":"Two hours of research on CRE CE stuff","Erin":"Send postcard for closing Friday","Steph":"","Julia":"Paid ad on IG for new listing","Jodi":"Client Giant + 2 closing gifts delivered","Judd":"","Lilly":"Post one IG Reel","Nathan":"","Ivan":"Add past deals to website page - 15 deals","Arianna":"Follow time block schedule - 90%","Susan":"","Michael":"Post one new IG Reel","Sarah":"Dedicate 1 hour to planning summer event","Mirela":"","Ben":"One IG post","Diana":"Follow up with three buyers and one seller"},"2026-06-10":{"Emma":"Connect with Olivia about branding","Jeremy":"Send out postcard","Evan":"Go under contract on his house","Srishti":"Time block calendar","Connor":"Build landing page","Erin":"Come up with closing gift for client in LA","Steph":"Pick a date for end of summer rooftop party","Julia":"Brainstorm and schedule video with Sebastian","Jodi":"Prep summer welcome/buyer guide","Judd":"Prep data/process for building to sell","Lilly":"Connect with Olivia on buyer guide","Nathan":"","Ivan":"","Arianna":"","Susan":"","Michael":"Post reel","Sarah":"Just sold postcards with Olivia","Mirela":"","Ben":"Send out 20 baseball calendars","Diana":""},"2026-06-17":{"Emma":"","Jeremy":"Take a headshot for website","Evan":"Tie up as much as possible before vacation","Srishti":"Post recently sold","Connor":"","Erin":"","Steph":"Get three new Google reviews","Julia":"Set up Google Local Services Ad","Jodi":"Plan to switch website host","Judd":"Talking points for meeting with Steve next week","Lilly":"Home owner/anniversary market update","Nathan":"","Ivan":"Ask for 10 reviews","Arianna":"Set up GMB account","Susan":"","Michael":"Voiceover","Sarah":"Finish website copy","Mirela":"Update half of previous leads in Zoho","Ben":"","Diana":""}}
 }
 
-const STATUS_CYCLE = ["", "Yes", "Partial", "No", "NA"]
-const ATT_CYCLE    = ["", "Present", "Absent"]
-const STATUS_ICONS = { "Yes":"Y","Partial":"~","No":"N","NA":"-","":"" }
-const ATT_ICONS    = { "Present":"P","Absent":"A","":"." }
-const SCORE        = { "Yes":1,"Partial":0.5,"No":0 }
-
-let data = null
-let saveTimer = null
+var STATUS_CYCLE = ["", "Yes", "Partial", "No", "NA"]
+var ATT_CYCLE    = ["", "Present", "Absent"]
+var STATUS_ICONS = { "Yes":"Y","Partial":"~","No":"N","NA":"-","":"" }
+var ATT_ICONS    = { "Present":"P","Absent":"A","":"-" }
+var SCORE        = { "Yes":1,"Partial":0.5,"No":0 }
+var data = null
+var saveTimer = null
 
 async function loadFromSupabase() {
-  const { data: row, error } = await sb.from('app_state').select('data').eq('id', 1).maybeSingle()
-  if (error) { console.error(error); return null }
-  return row ? row.data : null
+  var result = await sb.from('app_state').select('data').eq('id', 1).maybeSingle()
+  if (result.error) { console.error(result.error); return null }
+  return result.data ? result.data.data : null
 }
 
 async function saveToSupabase() {
   showSaving()
   try { localStorage.setItem('broker_tracker_backup', JSON.stringify(data)) } catch(e) {}
-  const { error } = await sb.from('app_state').upsert({ id: 1, data: data }, { onConflict: 'id' })
-  if (error) {
-    console.error('Save error:', error)
-    showSaveError()
-  } else {
-    hideSaving()
-  }
+  var result = await sb.from('app_state').upsert({ id: 1, data: data }, { onConflict: 'id' })
+  if (result.error) { console.error('Save error:', result.error); showSaveError() }
+  else { hideSaving() }
 }
 
-function scheduleSave() {
-  clearTimeout(saveTimer)
-  saveTimer = setTimeout(saveToSupabase, 800)
-}
+function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveToSupabase, 800) }
 
 function showSaving() {
-  const el = document.getElementById('save-indicator')
-  el.textContent = 'Saving...'
-  el.style.background = '#034245'
-  el.style.cursor = 'default'
-  el.onclick = null
-  el.classList.add('show')
+  var el = document.getElementById('save-indicator')
+  el.textContent = 'Saving...'; el.style.background = '#034245'; el.style.cursor = 'default'; el.onclick = null; el.classList.add('show')
 }
 function hideSaving() {
-  const el = document.getElementById('save-indicator')
-  el.textContent = 'Saved'
-  el.style.background = '#034245'
-  setTimeout(() => el.classList.remove('show'), 1500)
+  var el = document.getElementById('save-indicator')
+  el.textContent = 'Saved'; el.style.background = '#034245'
+  setTimeout(function() { el.classList.remove('show') }, 1500)
 }
 function showSaveError() {
-  const el = document.getElementById('save-indicator')
-  el.textContent = 'Save failed - click to retry'
-  el.style.background = '#c00'
-  el.style.cursor = 'pointer'
-  el.onclick = () => { el.onclick = null; el.style.cursor = 'default'; saveToSupabase() }
+  var el = document.getElementById('save-indicator')
+  el.textContent = 'Save failed - click to retry'; el.style.background = '#c00'; el.style.cursor = 'pointer'
+  el.onclick = function() { el.onclick = null; el.style.cursor = 'default'; saveToSupabase() }
 }
 
 async function init() {
-  const remote = await loadFromSupabase()
+  var remote = await loadFromSupabase()
   if (remote) {
     data = remote
   } else {
-    let backup = null
-    try { const b = localStorage.getItem('broker_tracker_backup'); if(b) backup = JSON.parse(b) } catch(e) {}
+    var backup = null
+    try { var b = localStorage.getItem('broker_tracker_backup'); if(b) backup = JSON.parse(b) } catch(e) {}
     data = backup || JSON.parse(JSON.stringify(DEFAULT_DATA))
     await saveToSupabase()
   }
-  ensureShape()
-  renderAll()
+  ensureShape(); renderAll()
 }
 
 function ensureShape() {
@@ -329,11 +314,13 @@ function ensureShape() {
   if (!data.attendance) data.attendance = {}
   if (!data.status) data.status = {}
   if (!data.commitments) data.commitments = {}
-  for (const w of data.weeks) {
+  for (var i=0; i<data.weeks.length; i++) {
+    var w = data.weeks[i]
     if (!data.attendance[w]) data.attendance[w] = {}
     if (!data.status[w]) data.status[w] = {}
     if (!data.commitments[w]) data.commitments[w] = {}
-    for (const b of data.brokers) {
+    for (var j=0; j<data.brokers.length; j++) {
+      var b = data.brokers[j]
       if (!(b in data.attendance[w])) data.attendance[w][b] = ""
       if (!(b in data.status[w])) data.status[w][b] = ""
       if (!(b in data.commitments[w])) data.commitments[w][b] = ""
@@ -342,191 +329,157 @@ function ensureShape() {
 }
 
 function brokerStats(broker) {
-  let meetings=0, present=0, absent=0, total=0, yes=0, partial=0, no=0, sum=0
-  for (const w of data.weeks) {
-    const att = (data.attendance[w] && data.attendance[w][broker]) || ""
-    if (att === "Present" || att === "Absent") { meetings++; if (att==="Present") present++; else absent++ }
-    if (att !== "Absent") {
-      const s = (data.status[w] && data.status[w][broker]) || ""
-      if (s==="Yes"||s==="Partial"||s==="No") { total++; sum+=SCORE[s]; if(s==="Yes")yes++; else if(s==="Partial")partial++; else no++ }
-    }
+  var meetings=0,present=0,absent=0,total=0,yes=0,partial=0,no=0,sum=0
+  for (var i=0; i<data.weeks.length; i++) {
+    var w=data.weeks[i], att=(data.attendance[w]&&data.attendance[w][broker])||""
+    if (att==="Present"||att==="Absent"){meetings++;if(att==="Present")present++;else absent++}
+    if (att!=="Absent"){var s=(data.status[w]&&data.status[w][broker])||"";if(s==="Yes"||s==="Partial"||s==="No"){total++;sum+=SCORE[s];if(s==="Yes")yes++;else if(s==="Partial")partial++;else no++}}
   }
-  return { meetings, present, absent, attPct: meetings>0?present/meetings:null, total, yes, partial, no, complPct: total>0?sum/total:null }
+  return {meetings:meetings,present:present,absent:absent,attPct:meetings>0?present/meetings:null,total:total,yes:yes,partial:partial,no:no,complPct:total>0?sum/total:null}
 }
 
 function weekStats(week) {
-  let meetings=0, present=0, total=0, sum=0
-  for (const b of data.brokers) {
-    const att = (data.attendance[week] && data.attendance[week][b]) || ""
-    if (att==="Present"||att==="Absent") { meetings++; if(att==="Present") present++ }
-    if (att!=="Absent") { const s=(data.status[week] && data.status[week][b])||""; if(s==="Yes"||s==="Partial"||s==="No"){total++;sum+=SCORE[s]} }
+  var meetings=0,present=0,total=0,sum=0
+  for (var i=0; i<data.brokers.length; i++) {
+    var b=data.brokers[i],att=(data.attendance[week]&&data.attendance[week][b])||""
+    if(att==="Present"||att==="Absent"){meetings++;if(att==="Present")present++}
+    if(att!=="Absent"){var s=(data.status[week]&&data.status[week][b])||"";if(s==="Yes"||s==="Partial"||s==="No"){total++;sum+=SCORE[s]}}
   }
-  return { attPct:meetings>0?present/meetings:null, complPct:total>0?sum/total:null, meetings, present, total }
+  return {attPct:meetings>0?present/meetings:null,complPct:total>0?sum/total:null,meetings:meetings,present:present,total:total}
 }
 
-function pctColor(p) { if(p===null)return"#ccc"; if(p>=0.8)return"#34a853"; if(p>=0.5)return"#f9ab00"; return"#ea4335" }
-function fmtPct(p) { if(p===null)return'<span class="pct-na">--</span>'; return Math.round(p*100)+"%" }
-function formatDate(iso) { return new Date(iso+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}) }
-function escAttr(s) { return String(s).replace(/&/g,"&amp;").replace(/'/g,"&#39;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+function pctColor(p){if(p===null)return"#ccc";if(p>=0.8)return"#34a853";if(p>=0.5)return"#f9ab00";return"#ea4335"}
+function fmtPct(p){if(p===null)return'<span class="pct-na">--</span>';return Math.round(p*100)+"%"}
+function formatDate(iso){return new Date(iso+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})}
+function escAttr(s){return String(s).replace(/&/g,"&amp;").replace(/'/g,"&#39;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 
 function renderStats() {
-  const sw = data.weeks.slice().sort()
-  let teamTotal=0, teamSum=0, totalMtgs=0, totalPresent=0
-  for (const w of sw) {
-    const s = weekStats(w)
-    totalMtgs+=s.meetings; totalPresent+=s.present
-    if(s.complPct!==null){teamTotal+=s.total;teamSum+=s.total*s.complPct}
-  }
-  const latest = sw[sw.length-1]
-  const ls = latest?weekStats(latest):null
-  const cards = [
-    { label:"Roster size", value:data.brokers.length, sub:data.weeks.length+" weeks tracked" },
-    { label:"Team avg attendance", value:totalMtgs>0?Math.round(totalPresent/totalMtgs*100)+"%":"--", sub:totalPresent+" of "+totalMtgs+" attendances" },
-    { label:"Team avg completion", value:teamTotal>0?Math.round(teamSum/teamTotal*100)+"%":"--", sub:teamTotal+" commitments evaluated" },
-    { label:"Latest week", value:(ls && ls.complPct!=null)?Math.round(ls.complPct*100)+"%":"--", sub:latest?formatDate(latest)+" completion":"--" },
+  var sw=data.weeks.slice().sort(),teamTotal=0,teamSum=0,totalMtgs=0,totalPresent=0
+  for(var i=0;i<sw.length;i++){var s=weekStats(sw[i]);totalMtgs+=s.meetings;totalPresent+=s.present;if(s.complPct!==null){teamTotal+=s.total;teamSum+=s.total*s.complPct}}
+  var latest=sw[sw.length-1],ls=latest?weekStats(latest):null
+  var cards=[
+    {label:"Roster size",value:data.brokers.length,sub:data.weeks.length+" weeks tracked"},
+    {label:"Team avg attendance",value:totalMtgs>0?Math.round(totalPresent/totalMtgs*100)+"%":"--",sub:totalPresent+" of "+totalMtgs+" attendances"},
+    {label:"Team avg completion",value:teamTotal>0?Math.round(teamSum/teamTotal*100)+"%":"--",sub:teamTotal+" commitments evaluated"},
+    {label:"Latest week",value:(ls&&ls.complPct!=null)?Math.round(ls.complPct*100)+"%":"--",sub:latest?formatDate(latest)+" completion":"--"}
   ]
-  document.getElementById("statRow").innerHTML = cards.map(c=>'<div class="stat-card"><div class="stat-label">'+c.label+'</div><div class="stat-value">'+c.value+'</div><div class="stat-sub">'+c.sub+'</div></div>').join("")
+  document.getElementById("statRow").innerHTML=cards.map(function(c){return'<div class="stat-card"><div class="stat-label">'+c.label+'</div><div class="stat-value">'+c.value+'</div><div class="stat-sub">'+c.sub+'</div></div>'}).join("")
 }
 
 function renderBrokerTable() {
-  const sw = data.weeks.slice().sort()
-  document.getElementById("brokerTbody").innerHTML = data.brokers.map(function(b) {
-    const s = brokerStats(b)
-    const trend = sw.map(function(w) {
-      const att=(data.attendance[w] && data.attendance[w][b])||""
-      if(att==="Absent") return "Ab"
-      const st=(data.status[w] && data.status[w][b])||""
-      return STATUS_ICONS[st]||"."
-    }).join(" ")
-    const aColor=pctColor(s.attPct), cColor=pctColor(s.complPct)
-    const aW=s.attPct!==null?Math.round(s.attPct*100):0, cW=s.complPct!==null?Math.round(s.complPct*100):0
-    return '<tr><td class="broker-name">'+b+'<span class="remove-broker" onclick="removeBroker(\''+escAttr(b)+'\')" title="Remove">x</span></td><td>'+s.meetings+'</td><td>'+s.present+'</td><td>'+s.absent+'</td><td><div class="pct-bar-wrap"><div class="pct-bar-bg"><div class="pct-bar-fill" style="width:'+aW+'%;background:'+aColor+'"></div></div><div class="pct-val">'+fmtPct(s.attPct)+'</div></div></td><td class="section-divider">'+s.total+'</td><td>'+s.yes+'</td><td>'+s.partial+'</td><td>'+s.no+'</td><td><div class="pct-bar-wrap"><div class="pct-bar-bg"><div class="pct-bar-fill" style="width:'+cW+'%;background:'+cColor+'"></div></div><div class="pct-val">'+fmtPct(s.complPct)+'</div></div></td><td class="trend section-divider">'+trend+'</td></tr>'
+  var sw=data.weeks.slice().sort()
+  document.getElementById("brokerTbody").innerHTML=data.brokers.map(function(b){
+    var s=brokerStats(b)
+    var trend=sw.map(function(w){var att=(data.attendance[w]&&data.attendance[w][b])||"";if(att==="Absent")return"A";var st=(data.status[w]&&data.status[w][b])||"";return STATUS_ICONS[st]||"-"}).join(" ")
+    var aW=s.attPct!==null?Math.round(s.attPct*100):0,cW=s.complPct!==null?Math.round(s.complPct*100):0
+    var aC=pctColor(s.attPct),cC=pctColor(s.complPct)
+    return '<tr><td class="broker-name">'+b+'<span class="remove-broker" onclick="removeBroker(\''+escAttr(b)+'\')" title="Remove">x</span></td><td>'+s.meetings+'</td><td>'+s.present+'</td><td>'+s.absent+'</td><td><div class="pct-bar-wrap"><div class="pct-bar-bg"><div class="pct-bar-fill" style="width:'+aW+'%;background:'+aC+'"></div></div><div class="pct-val">'+fmtPct(s.attPct)+'</div></div></td><td class="section-divider">'+s.total+'</td><td>'+s.yes+'</td><td>'+s.partial+'</td><td>'+s.no+'</td><td><div class="pct-bar-wrap"><div class="pct-bar-bg"><div class="pct-bar-fill" style="width:'+cW+'%;background:'+cC+'"></div></div><div class="pct-val">'+fmtPct(s.complPct)+'</div></div></td><td class="trend section-divider">'+trend+'</td></tr>'
   }).join("")
 }
 
 function renderGrid() {
-  const sw = data.weeks.slice().sort()
-  let html = "<thead><tr><th rowspan='2'>Broker</th>"
-  for (const w of sw) html += '<th colspan="2" class="week-block"><div class="week-header">'+formatDate(w)+'</div></th>'
-  html += "</tr><tr>"
-  for (const w of sw) html += '<th class="week-block sub-header">Att</th><th class="sub-header">Status</th>'
-  html += "</tr></thead><tbody>"
-  for (const b of data.brokers) {
-    html += '<tr><td class="broker-name">'+b+'</td>'
-    for (const w of sw) {
-      const att=(data.attendance[w] && data.attendance[w][b])||""
-      const status=(data.status[w] && data.status[w][b])||""
-      const disabled=att==="Absent"
-      html += '<td class="week-block"><span class="att-cell att-'+(att||"empty")+'" onclick="cycleAtt(\''+w+'\',\''+escAttr(b)+'\')">'+(ATT_ICONS[att]||".")+'</span></td>'
-      html += '<td><span class="status-cell '+(disabled?"status-NA disabled":status?"status-"+status:"status-empty")+'" '+(disabled?"":' onclick="cycleStatus(\''+w+'\',\''+escAttr(b)+'\')"')+'>'+(disabled?"Ab":(STATUS_ICONS[status]||"."))+'</span></td>'
+  var sw=data.weeks.slice().sort(),html="<thead><tr><th rowspan='2'>Broker</th>"
+  for(var i=0;i<sw.length;i++)html+='<th colspan="2" class="week-block"><div class="week-header">'+formatDate(sw[i])+'</div></th>'
+  html+="</tr><tr>"
+  for(var i=0;i<sw.length;i++)html+='<th class="week-block sub-header">Att</th><th class="sub-header">Status</th>'
+  html+="</tr></thead><tbody>"
+  for(var j=0;j<data.brokers.length;j++){
+    var b=data.brokers[j];html+='<tr><td class="broker-name">'+b+'</td>'
+    for(var i=0;i<sw.length;i++){
+      var w=sw[i],att=(data.attendance[w]&&data.attendance[w][b])||"",status=(data.status[w]&&data.status[w][b])||"",disabled=att==="Absent"
+      html+='<td class="week-block"><span class="att-cell att-'+(att||"empty")+'" onclick="cycleAtt(\''+w+'\',\''+escAttr(b)+'\')">'+(ATT_ICONS[att]||"-")+'</span></td>'
+      html+='<td><span class="status-cell '+(disabled?"status-NA disabled":status?"status-"+status:"status-empty")+'" '+(disabled?"":' onclick="cycleStatus(\''+w+'\',\''+escAttr(b)+'\')"')+'>'+(disabled?"A":(STATUS_ICONS[status]||"-"))+'</span></td>'
     }
-    html += "</tr>"
+    html+="</tr>"
   }
-  document.getElementById("gridTable").innerHTML = html + "</tbody>"
+  document.getElementById("gridTable").innerHTML=html+"</tbody>"
 }
 
 function renderWeekSelector() {
-  const sel = document.getElementById("weekSelector")
-  const sw = data.weeks.slice().sort()
-  const cur = sw.includes(sel.value) ? sel.value : sw[sw.length-1]
-  sel.innerHTML = sw.map(function(w){ return '<option value="'+w+'" '+(w===cur?"selected":"")+'>'+formatDate(w)+' -- '+w+'</option>' }).join("")
+  var sel=document.getElementById("weekSelector"),sw=data.weeks.slice().sort()
+  var cur=sw.includes(sel.value)?sel.value:sw[sw.length-1]
+  sel.innerHTML=sw.map(function(w){return'<option value="'+w+'" '+(w===cur?"selected":"")+'>'+formatDate(w)+' -- '+w+'</option>'}).join("")
 }
 
 function renderMeeting() {
-  const sel = document.getElementById("weekSelector")
-  const week = sel.value; if (!week) return
-  const sw = data.weeks.slice().sort()
-  const priorWeek = sw[sw.indexOf(week)-1] || null
-  document.getElementById("meetingTbody").innerHTML = data.brokers.map(function(b) {
-    const att=(data.attendance[week] && data.attendance[week][b])||""
-    const status=(data.status[week] && data.status[week][b])||""
-    const disabled=att==="Absent"
-    const priorCommit=priorWeek?(data.commitments[priorWeek] && data.commitments[priorWeek][b])||"":""
-    const thisCommit=(data.commitments[week] && data.commitments[week][b])||""
-    return '<tr><td class="broker-name">'+b+'</td><td><span class="att-cell att-'+(att||"empty")+'" onclick="cycleAtt(\''+week+'\',\''+escAttr(b)+'\')">'+(ATT_ICONS[att]||".")+'</span></td><td>'+(priorCommit?escAttr(priorCommit):'<span class="commit-prior-empty">--</span>')+'</td><td><span class="status-cell '+(disabled?"status-NA disabled":status?"status-"+status:"status-empty")+'" '+(disabled?"":' onclick="cycleStatus(\''+week+'\',\''+escAttr(b)+'\')"')+'>'+(disabled?"Ab":(STATUS_ICONS[status]||"."))+'</span></td><td><input type="text" class="commit-input'+(thisCommit?" has-value":"")+'" value="'+escAttr(thisCommit)+'" placeholder="Type this weeks commitment..." onblur="updateCommitment(\''+week+'\',\''+escAttr(b)+'\',this.value)"></td></tr>'
+  var sel=document.getElementById("weekSelector"),week=sel.value;if(!week)return
+  var sw=data.weeks.slice().sort(),priorWeek=sw[sw.indexOf(week)-1]||null
+  document.getElementById("meetingTbody").innerHTML=data.brokers.map(function(b){
+    var att=(data.attendance[week]&&data.attendance[week][b])||"",status=(data.status[week]&&data.status[week][b])||"",disabled=att==="Absent"
+    var priorCommit=priorWeek?(data.commitments[priorWeek]&&data.commitments[priorWeek][b])||"":""
+    var thisCommit=(data.commitments[week]&&data.commitments[week][b])||""
+    return '<tr><td class="broker-name">'+b+'</td><td><span class="att-cell att-'+(att||"empty")+'" onclick="cycleAtt(\''+week+'\',\''+escAttr(b)+'\')">'+(ATT_ICONS[att]||"-")+'</span></td><td>'+(priorCommit?escAttr(priorCommit):'<span class="commit-prior-empty">--</span>')+'</td><td><span class="status-cell '+(disabled?"status-NA disabled":status?"status-"+status:"status-empty")+'" '+(disabled?"":' onclick="cycleStatus(\''+week+'\',\''+escAttr(b)+'\')"')+'>'+(disabled?"A":(STATUS_ICONS[status]||"-"))+'</span></td><td><input type="text" class="commit-input'+(thisCommit?" has-value":"")+'" value="'+escAttr(thisCommit)+'" placeholder="Type this weeks commitment..." onblur="updateCommitment(\''+week+'\',\''+escAttr(b)+'\',this.value)"></td></tr>'
   }).join("")
 }
 
-let chart
+var chart
 function renderChart() {
-  const sw = data.weeks.slice().sort()
-  const ctx = document.getElementById("trendChart").getContext("2d")
-  if (chart) chart.destroy()
-  chart = new Chart(ctx, {
-    type:"line",
-    data:{
-      labels:sw.map(formatDate),
-      datasets:[
-        {label:"Attendance %",data:sw.map(function(w){const s=weekStats(w);return s.attPct!==null?Math.round(s.attPct*100):null}),borderColor:"#5C1C2B",backgroundColor:"rgba(92,28,43,0.08)",tension:0.25,pointRadius:5,pointBackgroundColor:"#5C1C2B",spanGaps:true,fill:false,borderDash:[4,4]},
-        {label:"Completion %",data:sw.map(function(w){const s=weekStats(w);return s.complPct!==null?Math.round(s.complPct*100):null}),borderColor:"#034245",backgroundColor:"rgba(3,66,69,0.1)",tension:0.25,pointRadius:5,pointBackgroundColor:"#034245",spanGaps:true,fill:true}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+"%"}}},x:{grid:{display:false}}},plugins:{legend:{position:"top",labels:{boxWidth:14}}}}
-  })
+  var sw=data.weeks.slice().sort(),ctx=document.getElementById("trendChart").getContext("2d")
+  if(chart)chart.destroy()
+  chart=new Chart(ctx,{type:"line",data:{labels:sw.map(formatDate),datasets:[
+    {label:"Attendance %",data:sw.map(function(w){var s=weekStats(w);return s.attPct!==null?Math.round(s.attPct*100):null}),borderColor:"#5C1C2B",backgroundColor:"rgba(92,28,43,0.08)",tension:0.25,pointRadius:5,pointBackgroundColor:"#5C1C2B",spanGaps:true,fill:false,borderDash:[4,4]},
+    {label:"Completion %",data:sw.map(function(w){var s=weekStats(w);return s.complPct!==null?Math.round(s.complPct*100):null}),borderColor:"#034245",backgroundColor:"rgba(3,66,69,0.1)",tension:0.25,pointRadius:5,pointBackgroundColor:"#034245",spanGaps:true,fill:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+"%"}}},x:{grid:{display:false}}},plugins:{legend:{position:"top",labels:{boxWidth:14}}}}})
 }
 
-function renderAll() { renderStats(); renderWeekSelector(); renderMeeting(); renderBrokerTable(); renderGrid(); renderChart() }
+function renderAll(){renderStats();renderWeekSelector();renderMeeting();renderBrokerTable();renderGrid();renderChart()}
 
-function cycleAtt(week, broker) {
-  const cur=(data.attendance[week] && data.attendance[week][broker])||""
+function cycleAtt(week,broker){
+  var cur=(data.attendance[week]&&data.attendance[week][broker])||""
   data.attendance[week][broker]=ATT_CYCLE[(ATT_CYCLE.indexOf(cur)+1)%ATT_CYCLE.length]
-  if (data.attendance[week][broker]==="Absent") data.status[week][broker]="NA"
-  renderAll(); scheduleSave()
+  if(data.attendance[week][broker]==="Absent")data.status[week][broker]="NA"
+  renderAll();scheduleSave()
 }
-function cycleStatus(week, broker) {
-  const cur=(data.status[week] && data.status[week][broker])||""
+function cycleStatus(week,broker){
+  var cur=(data.status[week]&&data.status[week][broker])||""
   data.status[week][broker]=STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur)+1)%STATUS_CYCLE.length]
-  renderAll(); scheduleSave()
+  renderAll();scheduleSave()
 }
-function updateCommitment(week, broker, text) {
-  if (data.commitments[week][broker]===text) return
-  data.commitments[week][broker]=text
-  scheduleSave()
+function updateCommitment(week,broker,text){
+  if(data.commitments[week][broker]===text)return
+  data.commitments[week][broker]=text;scheduleSave()
 }
 
-function addWeek() {
-  const last=data.weeks.slice().sort().pop()
-  const next=new Date(last+"T12:00:00"); next.setDate(next.getDate()+7)
+function addWeek(){
+  var last=data.weeks.slice().sort().pop(),next=new Date(last+"T12:00:00");next.setDate(next.getDate()+7)
   document.getElementById("newWeekDate").value=next.toISOString().slice(0,10)
   document.getElementById("modal").classList.add("open")
 }
-function closeModal() { document.getElementById("modal").classList.remove("open") }
-function confirmAddWeek() {
-  const d=document.getElementById("newWeekDate").value; if(!d) return
-  if (!data.weeks.includes(d)) {
-    data.weeks.push(d)
-    data.attendance[d]={}; data.status[d]={}; data.commitments[d]={}
-    for (const b of data.brokers) { data.attendance[d][b]=""; data.status[d][b]=""; data.commitments[d][b]="" }
-    renderAll(); saveToSupabase()
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function confirmAddWeek(){
+  var d=document.getElementById("newWeekDate").value;if(!d)return
+  if(!data.weeks.includes(d)){
+    data.weeks.push(d);data.attendance[d]={};data.status[d]={};data.commitments[d]={}
+    for(var i=0;i<data.brokers.length;i++){var b=data.brokers[i];data.attendance[d][b]="";data.status[d][b]="";data.commitments[d][b]=""}
+    renderAll();saveToSupabase()
   }
   closeModal()
 }
 
-function addBroker() {
+function addBroker(){
   document.getElementById("newBrokerName").value=""
   document.getElementById("brokerModal").classList.add("open")
   setTimeout(function(){document.getElementById("newBrokerName").focus()},50)
 }
-function closeBrokerModal() { document.getElementById("brokerModal").classList.remove("open") }
-function confirmAddBroker() {
-  const name=document.getElementById("newBrokerName").value.trim(); if(!name) return
-  if (data.brokers.some(function(b){return b.toLowerCase()===name.toLowerCase()})) { alert(name+" is already on the roster."); return }
+function closeBrokerModal(){document.getElementById("brokerModal").classList.remove("open")}
+function confirmAddBroker(){
+  var name=document.getElementById("newBrokerName").value.trim();if(!name)return
+  if(data.brokers.some(function(b){return b.toLowerCase()===name.toLowerCase()})){alert(name+" is already on the roster.");return}
   data.brokers.push(name)
-  for (const w of data.weeks) { data.attendance[w][name]=""; data.status[w][name]=""; data.commitments[w][name]="" }
-  renderAll(); saveToSupabase(); closeBrokerModal()
+  for(var i=0;i<data.weeks.length;i++){var w=data.weeks[i];data.attendance[w][name]="";data.status[w][name]="";data.commitments[w][name]=""}
+  renderAll();saveToSupabase();closeBrokerModal()
 }
 
-function removeBroker(name) {
-  if (!confirm("Remove "+name+"? Their historical data will be deleted.")) return
+function removeBroker(name){
+  if(!confirm("Remove "+name+"? Their historical data will be deleted."))return
   data.brokers=data.brokers.filter(function(b){return b!==name})
-  for (const w of data.weeks) { delete data.attendance[w][name]; delete data.status[w][name]; delete data.commitments[w][name] }
-  renderAll(); saveToSupabase()
+  for(var i=0;i<data.weeks.length;i++){var w=data.weeks[i];delete data.attendance[w][name];delete data.status[w][name];delete data.commitments[w][name]}
+  renderAll();saveToSupabase()
 }
 
-function exportJSON() {
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"})
-  const a=document.createElement("a"); a.href=URL.createObjectURL(blob)
-  a.download="broker_tracker_data.json"; a.click(); URL.revokeObjectURL(a.href)
+function exportJSON(){
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"})
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="broker_tracker_data.json";a.click();URL.revokeObjectURL(a.href)
 }
 </script>
 </body>
