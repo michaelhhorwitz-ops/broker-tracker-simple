@@ -117,7 +117,7 @@ tr:hover .remove-broker { opacity: 1; }
 
 /* Saving indicator */
 #save-indicator { position: fixed; bottom: 16px; right: 20px; background: #034245; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; opacity: 0; transition: opacity .3s; pointer-events: none; }
-#save-indicator.show { opacity: 1; }
+#save-indicator.show { opacity: 1; pointer-events: auto; }
 </style>
 </head>
 <body>
@@ -235,7 +235,7 @@ tr:hover .remove-broker { opacity: 1; }
 <script>
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
 const SUPABASE_URL  = 'https://jddtvellclfpwjrehxpu.supabase.co'
-const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkZHR2ZWxsY2xmcHdqcmVoeHB1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMjY1MjIsImV4cCI6MjA5NzgwMjUyMn0.cVnIBcbRLLBWDIKgnpKp_Lc3W-CXz6eWeiCzn9sDgT4'
+const SUPABASE_KEY  = 'eyJhbGci••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••'
 const SITE_PASSWORD = 'MHSJ$ales'
 // ────────────────────────────────────────────────────────────────────────────
 
@@ -283,9 +283,14 @@ async function loadFromSupabase() {
 
 async function saveToSupabase() {
   showSaving()
+  try { localStorage.setItem('broker_tracker_backup', JSON.stringify(data)) } catch(e) {}
   const { error } = await sb.from('app_state').upsert({ id: 1, data }, { onConflict: 'id' })
-  if (error) console.error('Save error:', error)
-  hideSaving()
+  if (error) {
+    console.error('Save error:', error)
+    showSaveError()
+  } else {
+    hideSaving()
+  }
 }
 
 function scheduleSave() {
@@ -294,20 +299,36 @@ function scheduleSave() {
 }
 
 function showSaving() {
-  document.getElementById('save-indicator').textContent = 'Saving...'
-  document.getElementById('save-indicator').classList.add('show')
+  const el = document.getElementById('save-indicator')
+  el.textContent = 'Saving...'
+  el.style.background = '#034245'
+  el.style.cursor = 'default'
+  el.onclick = null
+  el.classList.add('show')
 }
 function hideSaving() {
-  document.getElementById('save-indicator').textContent = 'Saved'
-  setTimeout(() => document.getElementById('save-indicator').classList.remove('show'), 1500)
+  const el = document.getElementById('save-indicator')
+  el.textContent = 'Saved ✓'
+  el.style.background = '#034245'
+  setTimeout(() => el.classList.remove('show'), 1500)
+}
+function showSaveError() {
+  const el = document.getElementById('save-indicator')
+  el.textContent = '⚠ Save failed — click to retry'
+  el.style.background = '#c00'
+  el.style.cursor = 'pointer'
+  el.onclick = () => { el.onclick = null; el.style.cursor = 'default'; saveToSupabase() }
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 async function init() {
   const remote = await loadFromSupabase()
-  data = remote || JSON.parse(JSON.stringify(DEFAULT_DATA))
-  if (!remote) {
-    // First load — seed with historical data
+  if (remote) {
+    data = remote
+  } else {
+    let backup = null
+    try { const b = localStorage.getItem('broker_tracker_backup'); if(b) backup = JSON.parse(b) } catch(e) {}
+    data = backup || JSON.parse(JSON.stringify(DEFAULT_DATA))
     await saveToSupabase()
   }
   ensureShape()
