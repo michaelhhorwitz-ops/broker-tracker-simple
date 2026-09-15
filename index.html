@@ -111,10 +111,6 @@ tr:hover .remove-broker { opacity: 1; }
     <p>Broker Commitment Tracker</p>
     <label class="gate-label">Password</label>
     <input type="password" class="gate-input" id="gateInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
-    <div id="keyWrap">
-      <label class="gate-label">API Key <span style="color:#aaa">(one-time setup per device)</span></label>
-      <input type="password" class="gate-input" id="gateKeyInput" placeholder="Paste API key here">
-    </div>
     <button class="btn btn-primary" style="width:100%;padding:9px;margin-top:4px" onclick="checkPassword()">Sign in</button>
     <div class="gate-error" id="gateError"></div>
   </div>
@@ -214,10 +210,8 @@ tr:hover .remove-broker { opacity: 1; }
 <script>
 var SUPABASE_URL = 'https://jddtvellclfpwjrehxpu.supabase.co'
 var SITE_PASSWORD = 'MHSJ$ales'
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkZHR2ZWxsY2xmcHdqcmVoeHB1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMjY1MjIsImV4cCI6MjA5NzgwMjUyMn0.cVnIBcbRLLBWDIKgnpKp_Lc3W-CXz6eWeiCzn9sDgT4'
 var sb = null
-
-function getStoredKey() { try { return localStorage.getItem('csre_sbkey') || '' } catch(e) { return '' } }
-function setStoredKey(k) { try { localStorage.setItem('csre_sbkey', k) } catch(e) {} }
 
 function checkPassword() {
   var pw = document.getElementById('gateInput').value
@@ -227,27 +221,12 @@ function checkPassword() {
     document.getElementById('gateInput').focus()
     return
   }
-  var keyWrap = document.getElementById('keyWrap')
-  var apiKey = ''
-  if (keyWrap.style.display !== 'none') {
-    apiKey = document.getElementById('gateKeyInput').value.trim()
-    if (!apiKey) { document.getElementById('gateError').textContent = 'Please paste the API key.'; return }
-    setStoredKey(apiKey)
-  } else {
-    apiKey = getStoredKey()
-  }
-  sb = supabase.createClient(SUPABASE_URL, apiKey)
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
   document.getElementById('gate').style.display = 'none'
   init()
 }
 
-// Hide API key field if already stored
-(function() {
-  if (getStoredKey()) {
-    document.getElementById('keyWrap').style.display = 'none'
-  }
-  document.getElementById('gateInput').focus()
-})()
+document.getElementById('gateInput').focus()
 
 var DEFAULT_DATA = {
   brokers: ["Emma","Jeremy","Evan","Srishti","Connor","Erin","Steph","Julia","Jodi","Judd","Lilly","Nathan","Ivan","Arianna","Susan","Michael","Sarah","Mirela","Ben","Diana"],
